@@ -67,17 +67,17 @@ class ProfileScreen extends ConsumerWidget {
           _ActionTile(
             icon: Icons.settings_outlined,
             title: 'Parametres',
-            onTap: () {},
+            onTap: () => context.pushNamed('settings'),
           ),
           _ActionTile(
             icon: Icons.help_outline,
             title: 'Aide & contact',
-            onTap: () {},
+            onTap: () => context.pushNamed('help'),
           ),
           _ActionTile(
             icon: Icons.info_outline,
             title: 'A propos',
-            onTap: () {},
+            onTap: () => context.pushNamed('about'),
           ),
         ],
       ),

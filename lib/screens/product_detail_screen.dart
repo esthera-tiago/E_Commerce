@@ -5,7 +5,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/cart_provider.dart';
 import '../providers/favorites_provider.dart';
 import '../providers/product_provider.dart';
+import '../providers/user_ratings_provider.dart';
 import '../widgets/animated_cart_button.dart';
+import '../widgets/rating_bar.dart';
 
 class ProductDetailScreen extends ConsumerWidget {
   const ProductDetailScreen({super.key, required this.productId});
@@ -117,6 +119,39 @@ class ProductDetailScreen extends ConsumerWidget {
                       fontWeight: FontWeight.bold,
                       color: Theme.of(context).colorScheme.primary,
                     ),
+              ),
+              const SizedBox(height: 24),
+              // User rating section
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Votre note',
+                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                      ),
+                      const SizedBox(height: 8),
+                      RatingBar(
+                        rating: ref.watch(userRatingsProvider.select(
+                          (m) => m[productId] ?? 0,
+                        )),
+                        onRatingChanged: (stars) {
+                          ref.read(userRatingsProvider.notifier).rate(productId, stars);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Note de $stars etoile(s) enregistree'),
+                              duration: const Duration(milliseconds: 800),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ),
               ),
               const SizedBox(height: 24),
               AnimatedCartButton(

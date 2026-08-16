@@ -1,10 +1,13 @@
 import 'package:go_router/go_router.dart';
 
+import '../screens/about_screen.dart';
 import '../screens/cart_screen.dart';
 import '../screens/favorites_screen.dart';
+import '../screens/help_screen.dart';
 import '../screens/home_screen.dart';
 import '../screens/product_detail_screen.dart';
 import '../screens/profile_screen.dart';
+import '../screens/settings_screen.dart';
 
 final GoRouter appRouter = GoRouter(
   initialLocation: '/',
@@ -35,6 +38,21 @@ final GoRouter appRouter = GoRouter(
       path: '/profile',
       name: 'profile',
       builder: (_, _) => const ProfileScreen(),
+    ),
+    GoRoute(
+      path: '/settings',
+      name: 'settings',
+      builder: (_, _) => const SettingsScreen(),
+    ),
+    GoRoute(
+      path: '/help',
+      name: 'help',
+      builder: (_, _) => const HelpScreen(),
+    ),
+    GoRoute(
+      path: '/about',
+      name: 'about',
+      builder: (_, _) => const AboutScreen(),
     ),
   ],
 );
