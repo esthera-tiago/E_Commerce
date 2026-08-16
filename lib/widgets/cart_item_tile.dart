@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../l10n/app_localizations.dart';
 import '../models/cart_item.dart';
 import '../providers/cart_provider.dart';
 
@@ -13,6 +14,7 @@ class CartItemTile extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final cs = Theme.of(context).colorScheme;
+    final loc = AppLocalizations.of(context);
 
     return Card(
       child: Padding(
@@ -110,7 +112,7 @@ class CartItemTile extends ConsumerWidget {
                 ref.read(cartProvider.notifier).remove(item.product.id);
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text('${item.product.name} retire du panier'),
+                    content: Text(loc.articleRetire(item.product.name)),
                     duration: const Duration(milliseconds: 800),
                   ),
                 );

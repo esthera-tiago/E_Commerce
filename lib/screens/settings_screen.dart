@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../l10n/app_localizations.dart';
 import '../widgets/app_scope.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -9,38 +10,31 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final scope = AppScope.of(context);
     final cs = Theme.of(context).colorScheme;
+    final loc = AppLocalizations.of(context);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Parametres')),
+      appBar: AppBar(title: Text(loc.parametres)),
       body: ListView(
         children: [
-          // Theme section
-          _SectionHeader(title: 'Apparence'),
+          _SectionHeader(title: loc.apparence),
           SwitchListTile(
             secondary: const Icon(Icons.dark_mode_outlined),
-            title: const Text('Mode sombre'),
-            subtitle: const Text('Activer le theme sombre'),
+            title: Text(loc.modeSombre),
+            subtitle: Text(loc.activerThemeSombre),
             value: scope.themeMode == ThemeMode.dark,
             onChanged: (dark) {
               scope.onThemeModeChanged(dark ? ThemeMode.dark : ThemeMode.light);
             },
           ),
           const Divider(),
-          // Language section
-          _SectionHeader(title: 'Langue'),
+          _SectionHeader(title: loc.langue),
           ListTile(
             leading: const Icon(Icons.language),
-            title: const Text('Langue de l\'application'),
+            title: Text(loc.langueApp),
             trailing: SegmentedButton<Locale>(
               segments: const [
-                ButtonSegment(
-                  value: Locale('fr'),
-                  label: Text('FR'),
-                ),
-                ButtonSegment(
-                  value: Locale('en'),
-                  label: Text('EN'),
-                ),
+                ButtonSegment(value: Locale('fr'), label: Text('FR')),
+                ButtonSegment(value: Locale('en'), label: Text('EN')),
               ],
               selected: {scope.locale},
               onSelectionChanged: (selected) {
@@ -51,55 +45,51 @@ class SettingsScreen extends StatelessWidget {
             ),
           ),
           const Divider(),
-          // Notifications section
-          _SectionHeader(title: 'Notifications'),
+          _SectionHeader(title: loc.notifications),
           SwitchListTile(
             secondary: const Icon(Icons.notifications_outlined),
-            title: const Text('Notifications push'),
-            subtitle: const Text('Recevoir les alertes promotionnelles'),
+            title: Text(loc.notificationsPush),
+            subtitle: Text(loc.recevoirAlertes),
             value: true,
             onChanged: (v) {},
           ),
           SwitchListTile(
             secondary: const Icon(Icons.email_outlined),
-            title: const Text('Alertes email'),
-            subtitle: const Text('Nouvelles offres et commandes'),
+            title: Text(loc.alertesEmail),
+            subtitle: Text(loc.nouvellesOffres),
             value: false,
             onChanged: (v) {},
           ),
           const Divider(),
-          // Privacy section
-          _SectionHeader(title: 'Confidentialite'),
+          _SectionHeader(title: loc.confidentialite),
           ListTile(
             leading: const Icon(Icons.lock_outline),
-            title: const Text('Politique de confidentialite'),
+            title: Text(loc.politiqueConfidentialite),
             trailing: const Icon(Icons.chevron_right),
             onTap: () {},
           ),
           ListTile(
             leading: const Icon(Icons.delete_outline),
-            title: const Text('Supprimer mes donnees'),
-            subtitle: const Text('Effacer toutes les donnees locales'),
+            title: Text(loc.supprimerDonnees),
+            subtitle: Text(loc.effacerDonnees),
             trailing: const Icon(Icons.chevron_right),
             onTap: () {
               showDialog(
                 context: context,
                 builder: (_) => AlertDialog(
-                  title: const Text('Confirmer la suppression'),
-                  content: const Text(
-                    'Toutes vos donnees locales seront effacees. Cette action est irreversible.',
-                  ),
+                  title: Text(loc.confirmerSuppression),
+                  content: Text(loc.texteSuppression),
                   actions: [
                     TextButton(
                       onPressed: () => Navigator.pop(context),
-                      child: const Text('Annuler'),
+                      child: Text(loc.annuler),
                     ),
                     FilledButton(
                       onPressed: () => Navigator.pop(context),
                       style: FilledButton.styleFrom(
                         backgroundColor: cs.error,
                       ),
-                      child: const Text('Supprimer'),
+                      child: Text(loc.supprimer),
                     ),
                   ],
                 ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../l10n/app_localizations.dart';
 import '../providers/favorites_provider.dart';
 import '../providers/product_provider.dart';
 import '../widgets/adaptive_scaffold.dart';
@@ -14,9 +15,10 @@ class FavoritesScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final favIds = ref.watch(favoritesProvider);
     final productsAsync = ref.watch(productListProvider);
+    final loc = AppLocalizations.of(context);
 
     return AdaptiveScaffold(
-      title: 'Favoris',
+      title: loc.favoris,
       currentIndex: 2,
       onDestinationSelected: (i) => _go(context, i),
       body: productsAsync.when(
@@ -25,8 +27,8 @@ class FavoritesScreen extends ConsumerWidget {
               products.where((p) => favIds.contains(p.id)).toList();
 
           if (favProducts.isEmpty) {
-            return const Center(
-              child: Text('Aucun favori pour le moment.'),
+            return Center(
+              child: Text(loc.aucunFavori),
             );
           }
 
@@ -40,7 +42,7 @@ class FavoritesScreen extends ConsumerWidget {
           );
         },
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (e, _) => Center(child: Text('Erreur: $e')),
+        error: (e, _) => Center(child: Text('${loc.erreur} $e')),
       ),
     );
   }

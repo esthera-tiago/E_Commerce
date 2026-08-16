@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../l10n/app_localizations.dart';
+
 class AdaptiveScaffold extends StatelessWidget {
   const AdaptiveScaffold({
     super.key,
@@ -19,6 +21,14 @@ class AdaptiveScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isWide = MediaQuery.sizeOf(context).width > 720;
+    final loc = AppLocalizations.of(context);
+
+    final destinations = [
+      (Icons.store_outlined, Icons.store, loc.boutique),
+      (Icons.shopping_cart_outlined, Icons.shopping_cart, loc.panier),
+      (Icons.favorite_outline, Icons.favorite, loc.favoris),
+      (Icons.person_outline, Icons.person, loc.profil),
+    ];
 
     if (isWide) {
       return Scaffold(
@@ -37,36 +47,18 @@ class AdaptiveScaffold extends StatelessWidget {
                       ),
                 ),
               ),
-              destinations: const [
-                NavigationRailDestination(
-                  icon: Icon(Icons.store_outlined),
-                  selectedIcon: Icon(Icons.store),
-                  label: Text('Boutique'),
-                ),
-                NavigationRailDestination(
-                  icon: Icon(Icons.shopping_cart_outlined),
-                  selectedIcon: Icon(Icons.shopping_cart),
-                  label: Text('Panier'),
-                ),
-                NavigationRailDestination(
-                  icon: Icon(Icons.favorite_outline),
-                  selectedIcon: Icon(Icons.favorite),
-                  label: Text('Favoris'),
-                ),
-                NavigationRailDestination(
-                  icon: Icon(Icons.person_outline),
-                  selectedIcon: Icon(Icons.person),
-                  label: Text('Profil'),
-                ),
-              ],
+              destinations: destinations
+                  .map((d) => NavigationRailDestination(
+                        icon: Icon(d.$1),
+                        selectedIcon: Icon(d.$2),
+                        label: Text(d.$3),
+                      ))
+                  .toList(),
             ),
             const VerticalDivider(width: 1),
             Expanded(
               child: Scaffold(
-                appBar: AppBar(
-                  title: Text(title),
-                  actions: actions,
-                ),
+                appBar: AppBar(title: Text(title), actions: actions),
                 body: body,
               ),
             ),
@@ -81,28 +73,13 @@ class AdaptiveScaffold extends StatelessWidget {
       bottomNavigationBar: NavigationBar(
         selectedIndex: currentIndex,
         onDestinationSelected: onDestinationSelected,
-        destinations: const [
-          NavigationDestination(
-            icon: Icon(Icons.store_outlined),
-            selectedIcon: Icon(Icons.store),
-            label: 'Boutique',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.shopping_cart_outlined),
-            selectedIcon: Icon(Icons.shopping_cart),
-            label: 'Panier',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.favorite_outline),
-            selectedIcon: Icon(Icons.favorite),
-            label: 'Favoris',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.person_outline),
-            selectedIcon: Icon(Icons.person),
-            label: 'Profil',
-          ),
-        ],
+        destinations: destinations
+            .map((d) => NavigationDestination(
+                  icon: Icon(d.$1),
+                  selectedIcon: Icon(d.$2),
+                  label: d.$3,
+                ))
+            .toList(),
       ),
     );
   }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../l10n/app_localizations.dart';
 import '../providers/cart_provider.dart';
 import '../widgets/adaptive_scaffold.dart';
 import '../widgets/cart_item_tile.dart';
@@ -13,14 +14,15 @@ class CartScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final items = ref.watch(cartProvider);
     final total = ref.watch(cartTotalProvider);
+    final loc = AppLocalizations.of(context);
 
     return AdaptiveScaffold(
-      title: 'Panier',
+      title: loc.panier,
       currentIndex: 1,
       onDestinationSelected: (i) => _go(context, i),
       body: items.isEmpty
-          ? const Center(
-              child: Text('Votre panier est vide.'),
+          ? Center(
+              child: Text(loc.panierVide),
             )
           : Column(
               children: [
@@ -71,7 +73,7 @@ class CartScreen extends ConsumerWidget {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Text(
-                              'Total',
+                              loc.total,
                               style: Theme.of(context).textTheme.labelLarge,
                             ),
                             Text(
@@ -89,14 +91,14 @@ class CartScreen extends ConsumerWidget {
                             ? null
                             : () {
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text('Commande passee (simulation)'),
+                                  SnackBar(
+                                    content: Text(loc.commandePassee),
                                   ),
                                 );
                                 ref.read(cartProvider.notifier).clear();
                               },
                         icon: const Icon(Icons.check),
-                        label: const Text('Commander'),
+                        label: Text(loc.commander),
                       ),
                     ],
                   ),

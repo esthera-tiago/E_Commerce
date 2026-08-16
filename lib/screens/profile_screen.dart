@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../l10n/app_localizations.dart';
 import '../providers/user_provider.dart';
 import '../widgets/adaptive_scaffold.dart';
 
@@ -12,9 +13,10 @@ class ProfileScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(editableUserProvider);
     final cs = Theme.of(context).colorScheme;
+    final loc = AppLocalizations.of(context);
 
     return AdaptiveScaffold(
-      title: 'Profil',
+      title: loc.profil,
       currentIndex: 3,
       onDestinationSelected: (i) => _go(context, i),
       body: ListView(
@@ -22,7 +24,7 @@ class ProfileScreen extends ConsumerWidget {
         children: [
           Center(
             child: GestureDetector(
-              onTap: () => _editAvatar(context, ref),
+              onTap: () => _editAvatar(context, ref, loc),
               child: CircleAvatar(
                 radius: 48,
                 backgroundColor: cs.primaryContainer,
@@ -38,7 +40,7 @@ class ProfileScreen extends ConsumerWidget {
           const SizedBox(height: 8),
           Center(
             child: Text(
-              'Appuyez pour modifier',
+              loc.appuyezModifier,
               style: Theme.of(context).textTheme.labelSmall?.copyWith(
                     color: cs.onSurfaceVariant,
                   ),
@@ -63,42 +65,41 @@ class ProfileScreen extends ConsumerWidget {
             ),
           ),
           const SizedBox(height: 24),
-          // Edit profile button
           SizedBox(
             width: double.infinity,
             child: OutlinedButton.icon(
-              onPressed: () => _editProfile(context, ref, user),
+              onPressed: () => _editProfile(context, ref, user, loc),
               icon: const Icon(Icons.edit_outlined),
-              label: const Text('Modifier le profil'),
+              label: Text(loc.modifierProfil),
             ),
           ),
           const SizedBox(height: 24),
           _InfoTile(
             icon: Icons.calendar_today,
-            label: 'Membre depuis',
+            label: loc.membreDepuis,
             value: user.memberSince,
           ),
           const SizedBox(height: 12),
           _InfoTile(
             icon: Icons.star_outline,
-            label: 'Points fidelite',
+            label: loc.pointsFidelite,
             value: '${user.loyaltyPoints}',
           ),
           const SizedBox(height: 32),
           const Divider(),
           _ActionTile(
             icon: Icons.settings_outlined,
-            title: 'Parametres',
+            title: loc.parametres,
             onTap: () => context.pushNamed('settings'),
           ),
           _ActionTile(
             icon: Icons.help_outline,
-            title: 'Aide & contact',
+            title: loc.aideContact,
             onTap: () => context.pushNamed('help'),
           ),
           _ActionTile(
             icon: Icons.info_outline,
-            title: 'A propos',
+            title: loc.aPropos,
             onTap: () => context.pushNamed('about'),
           ),
         ],
@@ -111,7 +112,7 @@ class ProfileScreen extends ConsumerWidget {
     if (index >= 0 && index < names.length) context.goNamed(names[index]);
   }
 
-  void _editAvatar(BuildContext context, WidgetRef ref) {
+  void _editAvatar(BuildContext context, WidgetRef ref, AppLocalizations loc) {
     final user = ref.read(editableUserProvider);
     final initials = [
       'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
@@ -120,6 +121,7 @@ class ProfileScreen extends ConsumerWidget {
     showModalBottomSheet(
       context: context,
       builder: (_) => _AvatarPicker(
+        title: loc.choisirAvatar,
         currentInitial: user.name.isNotEmpty ? user.name[0] : '?',
         initials: initials,
         onSelected: (initial) {
@@ -131,7 +133,8 @@ class ProfileScreen extends ConsumerWidget {
     );
   }
 
-  void _editProfile(BuildContext context, WidgetRef ref, dynamic user) {
+  void _editProfile(
+      BuildContext context, WidgetRef ref, dynamic user, AppLocalizations loc) {
     final nameCtrl = TextEditingController(text: user.name);
     final emailCtrl = TextEditingController(text: user.email);
 
@@ -150,7 +153,7 @@ class ProfileScreen extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(
-              'Modifier le profil',
+              loc.modifierProfil,
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -158,18 +161,18 @@ class ProfileScreen extends ConsumerWidget {
             const SizedBox(height: 20),
             TextField(
               controller: nameCtrl,
-              decoration: const InputDecoration(
-                labelText: 'Nom',
-                prefixIcon: Icon(Icons.person_outline),
+              decoration: InputDecoration(
+                labelText: loc.nom,
+                prefixIcon: const Icon(Icons.person_outline),
               ),
               textCapitalization: TextCapitalization.words,
             ),
             const SizedBox(height: 12),
             TextField(
               controller: emailCtrl,
-              decoration: const InputDecoration(
-                labelText: 'Email',
-                prefixIcon: Icon(Icons.email_outlined),
+              decoration: InputDecoration(
+                labelText: loc.email,
+                prefixIcon: const Icon(Icons.email_outlined),
               ),
               keyboardType: TextInputType.emailAddress,
             ),
@@ -186,10 +189,10 @@ class ProfileScreen extends ConsumerWidget {
                 }
                 Navigator.pop(context);
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Profil mis a jour')),
+                  SnackBar(content: Text(loc.profilMisAJour)),
                 );
               },
-              child: const Text('Enregistrer'),
+              child: Text(loc.enregistrer),
             ),
           ],
         ),
@@ -200,11 +203,13 @@ class ProfileScreen extends ConsumerWidget {
 
 class _AvatarPicker extends StatelessWidget {
   const _AvatarPicker({
+    required this.title,
     required this.currentInitial,
     required this.initials,
     required this.onSelected,
   });
 
+  final String title;
   final String currentInitial;
   final List<String> initials;
   final ValueChanged<String> onSelected;
@@ -217,7 +222,7 @@ class _AvatarPicker extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            'Choisir un avatar',
+            title,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),

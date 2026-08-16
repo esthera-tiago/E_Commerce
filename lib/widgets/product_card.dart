@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../l10n/app_localizations.dart';
 import '../models/product.dart';
 import '../providers/cart_provider.dart';
 import '../providers/favorites_provider.dart';
@@ -17,6 +18,7 @@ class ProductCard extends ConsumerWidget {
     final cs = Theme.of(context).colorScheme;
     final isFav =
         ref.watch(favoritesProvider.select((s) => s.contains(product.id)));
+    final loc = AppLocalizations.of(context);
 
     return Card(
       clipBehavior: Clip.antiAlias,
@@ -28,7 +30,6 @@ class ProductCard extends ConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Image placeholder
             Expanded(
               child: Stack(
                 fit: StackFit.expand,
@@ -38,7 +39,7 @@ class ProductCard extends ConsumerWidget {
                     fit: BoxFit.cover,
                     placeholder: (_, _) => Container(
                       color: cs.surfaceContainerHigh,
-                      child: Center(
+                      child: const Center(
                         child: CircularProgressIndicator(strokeWidth: 2),
                       ),
                     ),
@@ -70,7 +71,6 @@ class ProductCard extends ConsumerWidget {
                 ],
               ),
             ),
-            // Info
             Padding(
               padding: const EdgeInsets.fromLTRB(10, 8, 10, 4),
               child: Column(
@@ -116,7 +116,7 @@ class ProductCard extends ConsumerWidget {
                           ref.read(cartProvider.notifier).add(product);
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content: Text('${product.name} ajoute au panier'),
+                              content: Text(loc.articleAjoute(product.name)),
                               duration: const Duration(milliseconds: 800),
                             ),
                           );

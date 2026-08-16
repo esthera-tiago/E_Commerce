@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../l10n/app_localizations.dart';
 import '../providers/cart_provider.dart';
 import '../providers/product_provider.dart';
 import '../widgets/adaptive_scaffold.dart';
@@ -15,9 +16,10 @@ class HomeScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final products = ref.watch(filteredProductsProvider);
     final itemCount = ref.watch(cartItemCountProvider);
+    final loc = AppLocalizations.of(context);
 
     return AdaptiveScaffold(
-      title: 'Boutique',
+      title: loc.boutique,
       currentIndex: 0,
       onDestinationSelected: (i) => _go(context, i),
       actions: [
@@ -39,9 +41,9 @@ class HomeScreen extends ConsumerWidget {
           const SliverToBoxAdapter(child: FilterBar()),
           ref.watch(productListProvider).when(
                 data: (_) => products.isEmpty
-                    ? const SliverFillRemaining(
+                    ? SliverFillRemaining(
                         child: Center(
-                          child: Text('Aucun produit trouve.'),
+                          child: Text(loc.aucunProduit),
                         ),
                       )
                     : SliverPadding(
@@ -65,7 +67,7 @@ class HomeScreen extends ConsumerWidget {
                 ),
                 error: (e, _) => SliverFillRemaining(
                   child: Center(
-                    child: Text('Erreur de chargement: $e'),
+                    child: Text('${loc.erreurChargement} $e'),
                   ),
                 ),
               ),

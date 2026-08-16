@@ -1,25 +1,27 @@
 import 'package:flutter/material.dart';
 
+import '../l10n/app_localizations.dart';
+
 class HelpScreen extends StatelessWidget {
   const HelpScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context);
+
     return Scaffold(
-      appBar: AppBar(title: const Text('Aide & contact')),
+      appBar: AppBar(title: Text(loc.aideContact)),
       body: ListView(
         children: [
-          // FAQ section
-          const _SectionHeader(title: 'Questions frequentes'),
+          _SectionHeader(title: loc.questionsFrequentes),
           ExpansionTile(
             leading: const Icon(Icons.shopping_cart_outlined),
-            title: const Text('Comment ajouter un article au panier ?'),
+            title: Text(loc.faqPanier),
             children: [
               Padding(
                 padding: const EdgeInsets.fromLTRB(56, 0, 16, 16),
                 child: Text(
-                  'Appuyez sur l\'icone panier sur la carte du produit, '
-                  'ou ouvrez la fiche produit et cliquez sur "Ajouter au panier".',
+                  loc.faqPanierRep,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: Theme.of(context).colorScheme.onSurfaceVariant,
                       ),
@@ -29,13 +31,12 @@ class HelpScreen extends StatelessWidget {
           ),
           ExpansionTile(
             leading: const Icon(Icons.favorite_outline),
-            title: const Text('Comment ajouter un favori ?'),
+            title: Text(loc.faqFavori),
             children: [
               Padding(
                 padding: const EdgeInsets.fromLTRB(56, 0, 16, 16),
                 child: Text(
-                  'Appuyez sur l\'icone coeur sur la carte du produit ou '
-                  'dans la fiche produit. Vos favoris sont sauvegardes localement.',
+                  loc.faqFavoriRep,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: Theme.of(context).colorScheme.onSurfaceVariant,
                       ),
@@ -45,13 +46,12 @@ class HelpScreen extends StatelessWidget {
           ),
           ExpansionTile(
             leading: const Icon(Icons.star_outline),
-            title: const Text('Comment noter un produit ?'),
+            title: Text(loc.faqNotation),
             children: [
               Padding(
                 padding: const EdgeInsets.fromLTRB(56, 0, 16, 16),
                 child: Text(
-                  'Ouvrez la fiche du produit et utilisez les etoiles '
-                  'dans la section "Votre note". Votre note est sauvegardee.',
+                  loc.faqNotationRep,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: Theme.of(context).colorScheme.onSurfaceVariant,
                       ),
@@ -61,13 +61,12 @@ class HelpScreen extends StatelessWidget {
           ),
           ExpansionTile(
             leading: const Icon(Icons.search),
-            title: const Text('Comment rechercher un produit ?'),
+            title: Text(loc.faqRecherche),
             children: [
               Padding(
                 padding: const EdgeInsets.fromLTRB(56, 0, 16, 16),
                 child: Text(
-                  'Utilisez la barre de recherche en haut de la page Boutique. '
-                  'Vous pouvez aussi filtrer par categorie et trier par prix ou note.',
+                  loc.faqRechercheRep,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: Theme.of(context).colorScheme.onSurfaceVariant,
                       ),
@@ -76,9 +75,8 @@ class HelpScreen extends StatelessWidget {
             ],
           ),
           const Divider(),
-          // Contact section
-          const _SectionHeader(title: 'Nous contacter'),
-          const _ContactForm(),
+          _SectionHeader(title: loc.nousContacter),
+          _ContactForm(),
         ],
       ),
     );
@@ -86,8 +84,6 @@ class HelpScreen extends StatelessWidget {
 }
 
 class _ContactForm extends StatefulWidget {
-  const _ContactForm();
-
   @override
   State<_ContactForm> createState() => _ContactFormState();
 }
@@ -109,6 +105,8 @@ class _ContactFormState extends State<_ContactForm> {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context);
+
     if (_submitted) {
       return Padding(
         padding: const EdgeInsets.all(24),
@@ -118,12 +116,12 @@ class _ContactFormState extends State<_ContactForm> {
                 size: 64, color: Theme.of(context).colorScheme.primary),
             const SizedBox(height: 16),
             Text(
-              'Message envoye !',
+              loc.messageEnvoye,
               style: Theme.of(context).textTheme.titleLarge,
             ),
             const SizedBox(height: 8),
             Text(
-              'Nous vous repondrons dans les plus brefs delais.',
+              loc.reponseBrefsDelais,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: Theme.of(context).colorScheme.onSurfaceVariant,
                   ),
@@ -142,39 +140,36 @@ class _ContactFormState extends State<_ContactForm> {
           children: [
             TextFormField(
               controller: _nameCtrl,
-              decoration: const InputDecoration(
-                labelText: 'Nom',
-                prefixIcon: Icon(Icons.person_outline),
+              decoration: InputDecoration(
+                labelText: loc.nom,
+                prefixIcon: const Icon(Icons.person_outline),
               ),
-              validator: (v) =>
-                  v == null || v.isEmpty ? 'Veuillez saisir votre nom' : null,
+              validator: (v) => v == null || v.isEmpty ? loc.saisirNom : null,
             ),
             const SizedBox(height: 12),
             TextFormField(
               controller: _emailCtrl,
-              decoration: const InputDecoration(
-                labelText: 'Email',
-                prefixIcon: Icon(Icons.email_outlined),
+              decoration: InputDecoration(
+                labelText: loc.email,
+                prefixIcon: const Icon(Icons.email_outlined),
               ),
               keyboardType: TextInputType.emailAddress,
               validator: (v) {
-                if (v == null || v.isEmpty) return 'Veuillez saisir votre email';
-                if (!v.contains('@')) return 'Email invalide';
+                if (v == null || v.isEmpty) return loc.saisirEmail;
+                if (!v.contains('@')) return loc.emailInvalide;
                 return null;
               },
             ),
             const SizedBox(height: 12),
             TextFormField(
               controller: _messageCtrl,
-              decoration: const InputDecoration(
-                labelText: 'Message',
-                prefixIcon: Icon(Icons.message_outlined),
+              decoration: InputDecoration(
+                labelText: loc.nousContacter,
+                prefixIcon: const Icon(Icons.message_outlined),
                 alignLabelWithHint: true,
               ),
               maxLines: 4,
-              validator: (v) => v == null || v.isEmpty
-                  ? 'Veuillez saisir votre message'
-                  : null,
+              validator: (v) => v == null || v.isEmpty ? loc.saisirMessage : null,
             ),
             const SizedBox(height: 16),
             FilledButton.icon(
@@ -184,7 +179,7 @@ class _ContactFormState extends State<_ContactForm> {
                 }
               },
               icon: const Icon(Icons.send),
-              label: const Text('Envoyer'),
+              label: Text(loc.envoyer),
             ),
           ],
         ),

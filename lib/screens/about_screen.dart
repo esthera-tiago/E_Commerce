@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 
+import '../l10n/app_localizations.dart';
+
 class AboutScreen extends StatelessWidget {
   const AboutScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
+    final loc = AppLocalizations.of(context);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('A propos')),
+      appBar: AppBar(title: Text(loc.aPropos)),
       body: ListView(
         padding: const EdgeInsets.all(24),
         children: [
@@ -39,7 +42,7 @@ class AboutScreen extends StatelessWidget {
           const SizedBox(height: 4),
           Center(
             child: Text(
-              'Version 1.0.0',
+              loc.version,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: cs.onSurfaceVariant,
                   ),
@@ -53,17 +56,14 @@ class AboutScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'A propos de l\'application',
+                    loc.aProposApp,
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
                   ),
                   const SizedBox(height: 12),
                   Text(
-                    'She4Tech Boutique est une application e-commerce premium '
-                    'developpee avec Flutter et Riverpod. Elle propose une '
-                    'experience d\'achat fluide avec catalogue, panier, favoris '
-                    'et notation des produits.',
+                    loc.descriptionApp,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: cs.onSurfaceVariant,
                           height: 1.5,
@@ -81,17 +81,17 @@ class AboutScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Technologies',
+                    loc.technologies,
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
                   ),
                   const SizedBox(height: 12),
-                  _TechRow(label: 'Framework', value: 'Flutter 3.44'),
-                  _TechRow(label: 'Etat', value: 'Riverpod 2.x'),
-                  _TechRow(label: 'Navigation', value: 'GoRouter'),
-                  _TechRow(label: 'Persistance', value: 'SharedPreferences'),
-                  _TechRow(label: 'Images', value: 'CachedNetworkImage'),
+                  _TechRow(label: loc.framework, value: 'Flutter 3.44'),
+                  _TechRow(label: loc.etat, value: 'Riverpod 2.x'),
+                  _TechRow(label: loc.navigation, value: 'GoRouter'),
+                  _TechRow(label: loc.persistance, value: 'SharedPreferences'),
+                  _TechRow(label: loc.images, value: 'CachedNetworkImage'),
                 ],
               ),
             ),
@@ -104,15 +104,14 @@ class AboutScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Licence',
+                    loc.licence,
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Application developpee dans le cadre du projet Multi-Screen '
-                    'de She4Tech. Tous droits reserves.',
+                    loc.licenceTexte,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: cs.onSurfaceVariant,
                           height: 1.5,

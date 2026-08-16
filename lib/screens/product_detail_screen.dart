@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../l10n/app_localizations.dart';
 import '../providers/cart_provider.dart';
 import '../providers/favorites_provider.dart';
 import '../providers/product_provider.dart';
@@ -19,6 +20,7 @@ class ProductDetailScreen extends ConsumerWidget {
     final productsAsync = ref.watch(productListProvider);
     final isFav =
         ref.watch(favoritesProvider.select((s) => s.contains(productId)));
+    final loc = AppLocalizations.of(context);
 
     return productsAsync.when(
       data: (products) {
@@ -92,7 +94,7 @@ class ProductDetailScreen extends ConsumerWidget {
                   Text('${product.rating}'),
                   const SizedBox(width: 8),
                   Text(
-                    '(${product.reviewCount} avis)',
+                    '(${product.reviewCount} ${loc.avis})',
                     style: Theme.of(context).textTheme.bodySmall,
                   ),
                 ],
@@ -129,7 +131,7 @@ class ProductDetailScreen extends ConsumerWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Votre note',
+                        loc.votreNote,
                         style: Theme.of(context).textTheme.titleMedium?.copyWith(
                               fontWeight: FontWeight.bold,
                             ),
@@ -143,7 +145,7 @@ class ProductDetailScreen extends ConsumerWidget {
                           ref.read(userRatingsProvider.notifier).rate(productId, stars);
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content: Text('Note de $stars etoile(s) enregistree'),
+                              content: Text(loc.noteEnregistree(stars)),
                               duration: const Duration(milliseconds: 800),
                             ),
                           );
@@ -158,7 +160,7 @@ class ProductDetailScreen extends ConsumerWidget {
                 onPressed: () {
                   ref.read(cartProvider.notifier).add(product);
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('${product.name} ajoute au panier')),
+                    SnackBar(content: Text(loc.articleAjoute(product.name))),
                   );
                 },
               ),
@@ -170,7 +172,7 @@ class ProductDetailScreen extends ConsumerWidget {
         body: Center(child: CircularProgressIndicator()),
       ),
       error: (e, _) => Scaffold(
-        body: Center(child: Text('Erreur: $e')),
+        body: Center(child: Text('${loc.erreur} $e')),
       ),
     );
   }
