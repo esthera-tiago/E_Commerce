@@ -102,6 +102,20 @@ class CartItemTile extends ConsumerWidget {
                     color: cs.primary,
                   ),
             ),
+            const SizedBox(width: 4),
+            IconButton(
+              iconSize: 18,
+              icon: Icon(Icons.delete_outline, color: cs.error),
+              onPressed: () {
+                ref.read(cartProvider.notifier).remove(item.product.id);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('${item.product.name} retire du panier'),
+                    duration: const Duration(milliseconds: 800),
+                  ),
+                );
+              },
+            ),
           ],
         ),
       ),

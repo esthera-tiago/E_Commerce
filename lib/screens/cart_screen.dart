@@ -29,7 +29,28 @@ class CartScreen extends ConsumerWidget {
                     padding: const EdgeInsets.all(16),
                     itemCount: items.length,
                     separatorBuilder: (_, _) => const SizedBox(height: 8),
-                    itemBuilder: (_, i) => CartItemTile(item: items[i]),
+                    itemBuilder: (_, i) => Dismissible(
+                      key: ValueKey(items[i].product.id),
+                      direction: DismissDirection.endToStart,
+                      background: Container(
+                        alignment: Alignment.centerRight,
+                        padding: const EdgeInsets.only(right: 20),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.error,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Icon(
+                          Icons.delete_outline,
+                          color: Theme.of(context).colorScheme.onError,
+                        ),
+                      ),
+                      onDismissed: (_) {
+                        ref
+                            .read(cartProvider.notifier)
+                            .remove(items[i].product.id);
+                      },
+                      child: CartItemTile(item: items[i]),
+                    ),
                   ),
                 ),
                 Container(

@@ -16,24 +16,39 @@ class SettingsScreen extends StatelessWidget {
         children: [
           // Theme section
           _SectionHeader(title: 'Apparence'),
-          _ThemeTile(
-            title: 'Mode sombre',
-            subtitle: 'Activer le theme sombre',
-            icon: Icons.dark_mode_outlined,
+          SwitchListTile(
+            secondary: const Icon(Icons.dark_mode_outlined),
+            title: const Text('Mode sombre'),
+            subtitle: const Text('Activer le theme sombre'),
             value: scope.themeMode == ThemeMode.dark,
             onChanged: (dark) {
               scope.onThemeModeChanged(dark ? ThemeMode.dark : ThemeMode.light);
             },
           ),
-          _ThemeTile(
-            title: 'Suivre le systeme',
-            subtitle: 'Utiliser le theme du systeme',
-            icon: Icons.brightness_auto_outlined,
-            value: scope.themeMode == ThemeMode.system,
-            onChanged: (system) {
-              scope.onThemeModeChanged(
-                  system ? ThemeMode.system : ThemeMode.light);
-            },
+          const Divider(),
+          // Language section
+          _SectionHeader(title: 'Langue'),
+          ListTile(
+            leading: const Icon(Icons.language),
+            title: const Text('Langue de l\'application'),
+            trailing: SegmentedButton<Locale>(
+              segments: const [
+                ButtonSegment(
+                  value: Locale('fr'),
+                  label: Text('FR'),
+                ),
+                ButtonSegment(
+                  value: Locale('en'),
+                  label: Text('EN'),
+                ),
+              ],
+              selected: {scope.locale},
+              onSelectionChanged: (selected) {
+                if (selected.isNotEmpty) {
+                  scope.onLocaleChanged(selected.first);
+                }
+              },
+            ),
           ),
           const Divider(),
           // Notifications section
@@ -111,33 +126,6 @@ class _SectionHeader extends StatelessWidget {
               color: Theme.of(context).colorScheme.primary,
             ),
       ),
-    );
-  }
-}
-
-class _ThemeTile extends StatelessWidget {
-  const _ThemeTile({
-    required this.title,
-    required this.subtitle,
-    required this.icon,
-    required this.value,
-    required this.onChanged,
-  });
-
-  final String title;
-  final String subtitle;
-  final IconData icon;
-  final bool value;
-  final ValueChanged<bool> onChanged;
-
-  @override
-  Widget build(BuildContext context) {
-    return SwitchListTile(
-      secondary: Icon(icon),
-      title: Text(title),
-      subtitle: Text(subtitle),
-      value: value,
-      onChanged: onChanged,
     );
   }
 }

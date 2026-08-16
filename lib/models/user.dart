@@ -18,6 +18,24 @@ class User {
   final String memberSince;
   final int loyaltyPoints;
 
+  User copyWith({
+    String? id,
+    String? name,
+    String? email,
+    String? avatarUrl,
+    String? memberSince,
+    int? loyaltyPoints,
+  }) {
+    return User(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      email: email ?? this.email,
+      avatarUrl: avatarUrl ?? this.avatarUrl,
+      memberSince: memberSince ?? this.memberSince,
+      loyaltyPoints: loyaltyPoints ?? this.loyaltyPoints,
+    );
+  }
+
   factory User.mock() {
     return const User(
       id: 'u1',

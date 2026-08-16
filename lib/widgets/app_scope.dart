@@ -5,11 +5,15 @@ class AppScope extends InheritedWidget {
     super.key,
     required this.themeMode,
     required this.onThemeModeChanged,
+    required this.locale,
+    required this.onLocaleChanged,
     required super.child,
   });
 
   final ThemeMode themeMode;
   final ValueChanged<ThemeMode> onThemeModeChanged;
+  final Locale locale;
+  final ValueChanged<Locale> onLocaleChanged;
 
   static AppScope of(BuildContext context) {
     return context.dependOnInheritedWidgetOfExactType<AppScope>()!;
@@ -17,5 +21,5 @@ class AppScope extends InheritedWidget {
 
   @override
   bool updateShouldNotify(AppScope oldWidget) =>
-      themeMode != oldWidget.themeMode;
+      themeMode != oldWidget.themeMode || locale != oldWidget.locale;
 }
