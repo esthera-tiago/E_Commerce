@@ -1,4 +1,4 @@
-# E-Commerce App — She4Tech Boutique
+# E-Commerce App — Boutique
 
 Application e-commerce Flutter premium alimentee par **Riverpod** pour la gestion d'etat.
 

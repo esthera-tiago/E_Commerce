@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -18,17 +19,30 @@ class CartItemTile extends ConsumerWidget {
         padding: const EdgeInsets.all(12),
         child: Row(
           children: [
-            // Thumbnail placeholder
-            Container(
-              width: 56,
-              height: 56,
-              decoration: BoxDecoration(
-                color: cs.surfaceContainerHigh,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Icon(
-                Icons.shopping_bag_outlined,
-                color: cs.primary.withAlpha(100),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: CachedNetworkImage(
+                imageUrl: item.product.imageUrl,
+                width: 56,
+                height: 56,
+                fit: BoxFit.cover,
+                placeholder: (_, _) => Container(
+                  width: 56,
+                  height: 56,
+                  color: cs.surfaceContainerHigh,
+                  child: const Center(
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  ),
+                ),
+                errorWidget: (_, _, _) => Container(
+                  width: 56,
+                  height: 56,
+                  color: cs.surfaceContainerHigh,
+                  child: Icon(
+                    Icons.broken_image_outlined,
+                    color: cs.primary.withAlpha(100),
+                  ),
+                ),
               ),
             ),
             const SizedBox(width: 12),

@@ -5,7 +5,7 @@
     "description": "Casque sans fil avec reduction active du bruit, autonomie de 40h et son premium. Compatible avec tous vos appareils.",
     "price": 89.99,
     "category": "Electronique",
-    "imageUrl": "https://picsum.photos/seed/casque/400/400",
+    "imageUrl": "https://picsum.photos/id/366/400/400",
     "rating": 4.7,
     "reviewCount": 234,
     "isFeatured": true
@@ -16,7 +16,7 @@
     "description": "Sac durable en toile impermeable avec compartiment laptop 15 pouces. Design moderne et ergonomique.",
     "price": 45.00,
     "category": "Mode",
-    "imageUrl": "https://picsum.photos/seed/sac/400/400",
+    "imageUrl": "https://picsum.photos/id/1025/400/400",
     "rating": 4.5,
     "reviewCount": 189,
     "isFeatured": true
@@ -27,7 +27,7 @@
     "description": "Suivi cardiac, GPS integre, etanche 50m. Parfaite pour vos seances de sport et le quotidien.",
     "price": 129.99,
     "category": "Electronique",
-    "imageUrl": "https://picsum.photos/seed/montre/400/400",
+    "imageUrl": "https://picsum.photos/id/292/400/400",
     "rating": 4.8,
     "reviewCount": 312,
     "isFeatured": true
@@ -38,7 +38,7 @@
     "description": "Coton bio 100%, coupe moderne, tissu doux et respirant. Disponible en plusieurs coloris.",
     "price": 29.99,
     "category": "Mode",
-    "imageUrl": "https://picsum.photos/seed/tshirt/400/400",
+    "imageUrl": "https://picsum.photos/id/1074/400/400",
     "rating": 4.3,
     "reviewCount": 156,
     "isFeatured": false
@@ -49,7 +49,7 @@
     "description": "Lampe connectee avec 16 millions de couleurs, control vocal et application mobile.",
     "price": 39.99,
     "category": "Maison",
-    "imageUrl": "https://picsum.photos/seed/lampe/400/400",
+    "imageUrl": "https://picsum.photos/id/1003/400/400",
     "rating": 4.6,
     "reviewCount": 98,
     "isFeatured": false
@@ -60,7 +60,7 @@
     "description": "Tapis de yoga antiderapant, epaisseur 6mm, materiau ecologique. Inclut sac de transport.",
     "price": 34.99,
     "category": "Sport",
-    "imageUrl": "https://picsum.photos/seed/yoga/400/400",
+    "imageUrl": "https://picsum.photos/id/1043/400/400",
     "rating": 4.4,
     "reviewCount": 203,
     "isFeatured": false
@@ -71,7 +71,7 @@
     "description": "Coffret de 12 fards a paupieres, 4 blush et 3 highlighters. Formules longue tenue.",
     "price": 59.99,
     "category": "Beaute",
-    "imageUrl": "https://picsum.photos/seed/maquillage/400/400",
+    "imageUrl": "https://picsum.photos/id/1062/400/400",
     "rating": 4.9,
     "reviewCount": 421,
     "isFeatured": true
@@ -82,7 +82,7 @@
     "description": "Le dernier grand roman de la scene litteraire africaine. Prix litteraire 2025.",
     "price": 18.99,
     "category": "Livres",
-    "imageUrl": "https://picsum.photos/seed/roman/400/400",
+    "imageUrl": "https://picsum.photos/id/1069/400/400",
     "rating": 4.7,
     "reviewCount": 567,
     "isFeatured": false
@@ -93,7 +93,7 @@
     "description": "Chaussures legere et confortable, semelle amortissante, style urbain tendance.",
     "price": 79.99,
     "category": "Mode",
-    "imageUrl": "https://picsum.photos/seed/sneakers/400/400",
+    "imageUrl": "https://picsum.photos/id/1060/400/400",
     "rating": 4.6,
     "reviewCount": 345,
     "isFeatured": true
@@ -104,7 +104,7 @@
     "description": "Son 360, etanche IPX7, 20h d'autonomie. Parfaite pour les fetes et voyages.",
     "price": 49.99,
     "category": "Electronique",
-    "imageUrl": "https://picsum.photos/seed/enceinte/400/400",
+    "imageUrl": "https://picsum.photos/id/1080/400/400",
     "rating": 4.5,
     "reviewCount": 178,
     "isFeatured": false
@@ -115,7 +115,7 @@
     "description": "Doublure en soie, enveloppe en coton bio. Certifiee hypoallergenique, lavable en machine.",
     "price": 65.00,
     "category": "Maison",
-    "imageUrl": "https://picsum.photos/seed/couette/400/400",
+    "imageUrl": "https://picsum.photos/id/1048/400/400",
     "rating": 4.8,
     "reviewCount": 89,
     "isFeatured": false
@@ -126,7 +126,7 @@
     "description": "Acier inoxydable, garde les boissons froides 24h ou chaudes 12h. Capacite 750ml.",
     "price": 24.99,
     "category": "Sport",
-    "imageUrl": "https://picsum.photos/seed/gourde/400/400",
+    "imageUrl": "https://picsum.photos/id/1047/400/400",
     "rating": 4.7,
     "reviewCount": 267,
     "isFeatured": false
@@ -137,7 +137,7 @@
     "description": "Huile naturelle a la vitamine C et huile d'argan. Eclat uniforme en 4 semaines.",
     "price": 32.99,
     "category": "Beaute",
-    "imageUrl": "https://picsum.photos/seed/huile/400/400",
+    "imageUrl": "https://picsum.photos/id/1027/400/400",
     "rating": 4.6,
     "reviewCount": 312,
     "isFeatured": false
@@ -148,7 +148,7 @@
     "description": "Manuel complet pour maitriser Flutter et Dart. Debutant a avance, avec projets pratiques.",
     "price": 42.00,
     "category": "Livres",
-    "imageUrl": "https://picsum.photos/seed/flutter/400/400",
+    "imageUrl": "https://picsum.photos/id/1065/400/400",
     "rating": 4.9,
     "reviewCount": 198,
     "isFeatured": true
@@ -159,7 +159,7 @@
     "description": "Veste legere et chaude, coupe femme, col rembourre. Parfaite pour les intemperies.",
     "price": 89.00,
     "category": "Mode",
-    "imageUrl": "https://picsum.photos/seed/veste/400/400",
+    "imageUrl": "https://picsum.photos/id/1058/400/400",
     "rating": 4.4,
     "reviewCount": 134,
     "isFeatured": false
@@ -170,7 +170,7 @@
     "description": "Navigation laser, cartographie intelligente, vidage automatique. Compatible voice assistant.",
     "price": 249.99,
     "category": "Maison",
-    "imageUrl": "https://picsum.photos/seed/robot/400/400",
+    "imageUrl": "https://picsum.photos/id/1056/400/400",
     "rating": 4.8,
     "reviewCount": 456,
     "isFeatured": true
@@ -181,7 +181,7 @@
     "description": "Carbone, poids 280g, grip confortable. Pour joueuses intermediaires et avancees.",
     "price": 119.00,
     "category": "Sport",
-    "imageUrl": "https://picsum.photos/seed/racket/400/400",
+    "imageUrl": "https://picsum.photos/id/1059/400/400",
     "rating": 4.5,
     "reviewCount": 87,
     "isFeatured": false
@@ -192,7 +192,7 @@
     "description": "Notes de jasmin, rose et bois de santal. Flacon elegante 50ml, longue tenue.",
     "price": 75.00,
     "category": "Beaute",
-    "imageUrl": "https://picsum.photos/seed/parfum/400/400",
+    "imageUrl": "https://picsum.photos/id/1022/400/400",
     "rating": 4.7,
     "reviewCount": 234,
     "isFeatured": false
@@ -203,7 +203,7 @@
     "description": "Cahier A5, 200 pages, couverture rigide. Inclut exercices et templates pour stimuler l'imagination.",
     "price": 15.99,
     "category": "Livres",
-    "imageUrl": "https://picsum.photos/seed/cahier/400/400",
+    "imageUrl": "https://picsum.photos/id/1044/400/400",
     "rating": 4.3,
     "reviewCount": 145,
     "isFeatured": false
@@ -214,7 +214,7 @@
     "description": "Drone pliable, camera 4K, stabilisation 3 axes. Vol 30 min, rechargement rapide.",
     "price": 199.99,
     "category": "Electronique",
-    "imageUrl": "https://picsum.photos/seed/drone/400/400",
+    "imageUrl": "https://picsum.photos/id/1076/400/400",
     "rating": 4.6,
     "reviewCount": 198,
     "isFeatured": true

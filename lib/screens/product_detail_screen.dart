@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -41,19 +42,29 @@ class ProductDetailScreen extends ConsumerWidget {
           body: ListView(
             padding: const EdgeInsets.all(16),
             children: [
-              // Product image placeholder
-              Container(
-                height: 300,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surfaceContainerHigh,
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: Center(
-                  child: Icon(
-                    Icons.shopping_bag_outlined,
-                    size: 80,
-                    color: Theme.of(context).colorScheme.primary.withAlpha(128),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(16),
+                child: CachedNetworkImage(
+                  imageUrl: product.imageUrl,
+                  height: 300,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                  placeholder: (_, _) => Container(
+                    height: 300,
+                    color: Theme.of(context).colorScheme.surfaceContainerHigh,
+                    child: const Center(child: CircularProgressIndicator()),
+                  ),
+                  errorWidget: (_, _, _) => Container(
+                    height: 300,
+                    color: Theme.of(context).colorScheme.surfaceContainerHigh,
+                    child: Icon(
+                      Icons.broken_image_outlined,
+                      size: 60,
+                      color: Theme.of(context)
+                          .colorScheme
+                          .primary
+                          .withAlpha(128),
+                    ),
                   ),
                 ),
               ),

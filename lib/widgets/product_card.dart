@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -32,12 +33,22 @@ class ProductCard extends ConsumerWidget {
               child: Stack(
                 fit: StackFit.expand,
                 children: [
-                  Container(
-                    color: cs.surfaceContainerHigh,
-                    child: Icon(
-                      Icons.shopping_bag_outlined,
-                      size: 40,
-                      color: cs.primary.withAlpha(80),
+                  CachedNetworkImage(
+                    imageUrl: product.imageUrl,
+                    fit: BoxFit.cover,
+                    placeholder: (_, _) => Container(
+                      color: cs.surfaceContainerHigh,
+                      child: Center(
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      ),
+                    ),
+                    errorWidget: (_, _, _) => Container(
+                      color: cs.surfaceContainerHigh,
+                      child: Icon(
+                        Icons.broken_image_outlined,
+                        size: 40,
+                        color: cs.primary.withAlpha(80),
+                      ),
                     ),
                   ),
                   Positioned(
