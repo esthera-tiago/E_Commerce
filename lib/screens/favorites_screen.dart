@@ -33,7 +33,10 @@ class FavoritesScreen extends ConsumerWidget {
           return ListView.builder(
             padding: const EdgeInsets.all(12),
             itemCount: favProducts.length,
-            itemBuilder: (_, i) => ProductCard(product: favProducts[i]),
+            itemBuilder: (_, i) => SizedBox(
+              height: 260,
+              child: ProductCard(product: favProducts[i]),
+            ),
           );
         },
         loading: () => const Center(child: CircularProgressIndicator()),
