@@ -1,7 +1,7 @@
 name: e_commerce_app
-description: "Premium e-commerce Flutter app powered by Riverpod state management."
+description: "She4Tech Boutique — e-commerce Flutter full-stack connected to a real REST API, with JWT auth, offline cache and Clean Architecture."
 publish_to: 'none'
-version: 1.0.0+1
+version: 2.0.0+1
 
 environment:
   sdk: ^3.12.1
@@ -12,19 +12,33 @@ dependencies:
   flutter_localizations:
     sdk: flutter
 
-  cupertino_icons: ^1.0.8
+  # State management
   flutter_riverpod: ^2.6.1
-  shared_preferences: ^2.5.0
+
+  # Navigation
   go_router: ^16.0.0
+
+  # Networking
+  dio: ^5.11.1
+
+  # Local persistence
+  hive_ce: ^2.20.0
+  hive_ce_flutter: ^2.3.4
+  shared_preferences: ^2.5.0
+  flutter_secure_storage: ^11.2.0
+
+  # Platform / utils
+  connectivity_plus: ^7.3.1
   cached_network_image: ^3.4.1
+  cupertino_icons: ^1.0.8
+  intl: ^0.20.2
+  crypto: ^3.0.7
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^6.0.0
+  mocktail: ^1.0.5
 
 flutter:
   uses-material-design: true
-
-  assets:
-    - assets/data/
