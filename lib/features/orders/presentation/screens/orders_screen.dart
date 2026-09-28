@@ -23,7 +23,9 @@ class OrdersScreen extends ConsumerWidget {
 
     if (user == null) {
       return Scaffold(
-        appBar: AppBar(title: Text(strings.orders)),
+        appBar: AppBar(
+          title: Semantics(header: true, child: Text(strings.orders)),
+        ),
         body: EmptyState(
           icon: Icons.person_outline,
           title: strings.guest,
@@ -34,7 +36,7 @@ class OrdersScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(strings.orders),
+        title: Semantics(header: true, child: Text(strings.orders)),
         actions: [
           IconButton(
             tooltip: strings.retry,
@@ -48,7 +50,11 @@ class OrdersScreen extends ConsumerWidget {
           const OfflineBanner(),
           Expanded(
             child: orders.when(
-              loading: () => const Center(child: CircularProgressIndicator()),
+              loading: () => Center(
+                child: CircularProgressIndicator(
+                  semanticsLabel: strings.loading,
+                ),
+              ),
               error: (error, _) => ErrorView(
                 message: strings.errorGeneric,
                 onRetry: () => ref.invalidate(ordersProvider),

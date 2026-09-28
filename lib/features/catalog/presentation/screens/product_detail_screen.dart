@@ -26,7 +26,9 @@ class ProductDetailScreen extends ConsumerWidget {
 
     return Scaffold(
       body: async.when(
-        loading: () => const Center(child: CircularProgressIndicator()),
+        loading: () => Center(
+          child: CircularProgressIndicator(semanticsLabel: strings.loading),
+        ),
         error: (error, _) => Scaffold(
           appBar: AppBar(),
           body: ErrorView(
@@ -40,7 +42,12 @@ class ProductDetailScreen extends ConsumerWidget {
               expandedHeight: 320,
               pinned: true,
               flexibleSpace: FlexibleSpaceBar(
-                background: RemoteImage(url: product.thumbnail),
+                // L'image de couverture porte le nom du produit : c'est le
+                // premier contenu que le lecteur d'écran Rencontre.
+                background: RemoteImage(
+                  url: product.thumbnail,
+                  semanticLabel: product.title,
+                ),
               ),
             ),
             SliverPadding(
@@ -59,7 +66,9 @@ class ProductDetailScreen extends ConsumerWidget {
                         ),
                       ),
                       IconButton.filledTonal(
-                        tooltip: strings.favorites,
+                        tooltip: ref.watch(isFavoriteProvider(product.id))
+                            ? strings.removeFromFavorites
+                            : strings.addToFavorites,
                         onPressed: () => ref
                             .read(favoritesControllerProvider.notifier)
                             .toggle(product),
@@ -75,10 +84,12 @@ class ProductDetailScreen extends ConsumerWidget {
                     ],
                   ),
                   const SizedBox(height: 4),
-                  Text(
-                    product.title,
-                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                      fontWeight: FontWeight.w700,
+                  Semantics(
+                    header: true,
+                    child: Text(
+                      product.title,
+                      style: Theme.of(context).textTheme.headlineSmall
+                          ?.copyWith(fontWeight: FontWeight.w700),
                     ),
                   ),
                   const SizedBox(height: 10),
@@ -296,11 +307,14 @@ class _Section extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          title,
-          style: Theme.of(
-            context,
-          ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
+        Semantics(
+          header: true,
+          child: Text(
+            title,
+            style: Theme.of(
+              context,
+            ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
+          ),
         ),
         const SizedBox(height: 8),
         child,

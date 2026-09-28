@@ -1,7 +1,7 @@
 name: e_commerce_app
 description: "She4Tech Boutique — e-commerce Flutter full-stack connected to a real REST API, with JWT auth, offline cache and Clean Architecture."
 publish_to: 'none'
-version: 2.0.0+1
+version: 2.1.0+1
 
 environment:
   sdk: ^3.12.1

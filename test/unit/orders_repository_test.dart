@@ -7,7 +7,7 @@ import 'package:e_commerce_app/features/orders/data/repositories/orders_reposito
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../support/fake_json_cache_store.dart';
+import '../support/fake_json_cache_store.dart';
 
 class _MockRemote extends Mock implements OrdersRemoteDataSource {}
 

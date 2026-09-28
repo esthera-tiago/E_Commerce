@@ -56,6 +56,10 @@ class OfflineBanner extends ConsumerWidget {
   }
 }
 
+/// Plafond de décodage, en pixels physiques. Au-delà, le gain de netteté est
+/// invisible et le coût mémoire devient absurde.
+const int maxDecodeWidth = 2048;
+
 /// Image distante avec états de chargement et de repli.
 ///
 /// `CachedNetworkImage` est indispensable ici : il sert le fichier depuis le
@@ -67,40 +71,77 @@ class RemoteImage extends StatelessWidget {
     super.key,
     this.fit = BoxFit.cover,
     this.borderRadius,
+    this.semanticLabel,
   });
 
   final String url;
   final BoxFit fit;
   final BorderRadius? borderRadius;
 
+  /// Nom de l'image pour les lecteurs d'écran. Laisser `null` la rend
+  /// muette : c'est le bon choix quand l'image répète une information déjà
+  /// annoncée par du texte voisin, comme la vignette d'une tuile produit.
+  final String? semanticLabel;
+
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
+    final strings = AppStrings.of(context);
     final placeholder = ColoredBox(
       color: scheme.surfaceContainerHighest,
       child: Icon(Icons.image_not_supported_outlined, color: scheme.outline),
     );
 
-    final Widget image = url.isEmpty
-        ? placeholder
-        : CachedNetworkImage(
-            imageUrl: url,
-            fit: fit,
-            placeholder: (_, _) => ColoredBox(
-              color: scheme.surfaceContainerHighest,
-              child: const Center(
-                child: SizedBox(
-                  width: 20,
-                  height: 20,
-                  child: CircularProgressIndicator(strokeWidth: 2),
+    if (url.isEmpty) return placeholder;
+
+    // Décoder à la taille d'affichage plutôt qu'en pleine résolution : une
+    // vignette de catalogue servie en 400 px n'a aucune raison d'occuper
+    // 2000 px de mémoire vive. `LayoutBuilder` donne la largeur réellement
+    // allouée, `devicePixelRatio` la densité cible, et le plafond évite
+    // d'allouer un bitmap déraisonnable sur un écran très dense.
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final dpr = MediaQuery.devicePixelRatioOf(context);
+        final width = constraints.hasBoundedWidth ? constraints.maxWidth : 0.0;
+        final memCacheWidth = width <= 0
+            ? null
+            : (width * dpr).round().clamp(1, maxDecodeWidth);
+
+        final Widget image = CachedNetworkImage(
+          imageUrl: url,
+          fit: fit,
+          memCacheWidth: memCacheWidth,
+          placeholder: (_, _) => ColoredBox(
+            color: scheme.surfaceContainerHighest,
+            child: Center(
+              child: SizedBox(
+                width: 20,
+                height: 20,
+                child: CircularProgressIndicator(
+                  semanticsLabel: strings.loading,
+                  strokeWidth: 2,
                 ),
               ),
             ),
-            errorWidget: (_, _, _) => placeholder,
-          );
+          ),
+          errorWidget: (_, _, _) => placeholder,
+        );
 
-    if (borderRadius == null) return image;
-    return ClipRRect(borderRadius: borderRadius!, child: image);
+        // Un nom unique remplace l'annonce interne de l'image : `excludeSemantics`
+        // empêche la lecture de « Chargement… » puis du nom en double.
+        final Widget content = semanticLabel == null
+            ? image
+            : Semantics(
+                label: semanticLabel,
+                image: true,
+                excludeSemantics: true,
+                child: image,
+              );
+
+        if (borderRadius == null) return content;
+        return ClipRRect(borderRadius: borderRadius!, child: content);
+      },
+    );
   }
 }
 
@@ -120,33 +161,39 @@ class RatingStars extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        for (var i = 1; i <= 5; i++)
-          Icon(
-            rating >= i
-                ? Icons.star_rounded
-                : (rating >= i - 0.5
-                      ? Icons.star_half_rounded
-                      : Icons.star_outline_rounded),
-            size: size,
-            color: rating >= i - 0.5
-                ? const Color(0xFFF5A623)
-                : scheme.outlineVariant,
-          ),
-        if (showValue) ...[
-          const SizedBox(width: 6),
-          Text(
-            rating.toStringAsFixed(1),
-            style: TextStyle(
-              fontSize: size * 0.85,
-              fontWeight: FontWeight.w600,
-              color: scheme.onSurfaceVariant,
+    // Les cinq étoiles sont un motif visuel : sans `excludeSemantics`, un
+    // lecteur d'écran annonce « étoile » cinq fois avant d'annoncer la note.
+    return Semantics(
+      label: AppStrings.of(context).rating(rating),
+      excludeSemantics: true,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          for (var i = 1; i <= 5; i++)
+            Icon(
+              rating >= i
+                  ? Icons.star_rounded
+                  : (rating >= i - 0.5
+                        ? Icons.star_half_rounded
+                        : Icons.star_outline_rounded),
+              size: size,
+              color: rating >= i - 0.5
+                  ? const Color(0xFFF5A623)
+                  : scheme.outlineVariant,
             ),
-          ),
+          if (showValue) ...[
+            const SizedBox(width: 6),
+            Text(
+              rating.toStringAsFixed(1),
+              style: TextStyle(
+                fontSize: size * 0.85,
+                fontWeight: FontWeight.w600,
+                color: scheme.onSurfaceVariant,
+              ),
+            ),
+          ],
         ],
-      ],
+      ),
     );
   }
 }
@@ -224,13 +271,19 @@ class EmptyState extends StatelessWidget {
                 color: scheme.surfaceContainerHighest,
                 shape: BoxShape.circle,
               ),
+              // L'icône ne fait qu'illustrer le message qui suit.
+              // `Icon` sans `semanticLabel` est déjà muet : l'icône ne fait
+              // qu'illustrer le message qui suit.
               child: Icon(icon, size: 40, color: scheme.outline),
             ),
             const SizedBox(height: 20),
-            Text(
-              title,
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.titleMedium,
+            Semantics(
+              header: true,
+              child: Text(
+                title,
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
             ),
             if (subtitle != null) ...[
               const SizedBox(height: 8),

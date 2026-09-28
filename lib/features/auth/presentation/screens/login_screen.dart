@@ -133,10 +133,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     FilledButton(
                       onPressed: isSubmitting ? null : _submit,
                       child: isSubmitting
-                          ? const SizedBox(
+                          ? SizedBox(
                               width: 20,
                               height: 20,
                               child: CircularProgressIndicator(
+                                semanticsLabel: strings.loading,
                                 strokeWidth: 2.4,
                               ),
                             )
@@ -326,6 +327,9 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                       decoration: InputDecoration(
                         labelText: '${strings.password} *',
                         suffixIcon: IconButton(
+                          tooltip: _obscurePassword
+                              ? strings.showPassword
+                              : strings.hidePassword,
                           onPressed: () => setState(
                             () => _obscurePassword = !_obscurePassword,
                           ),
@@ -349,10 +353,11 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                     FilledButton(
                       onPressed: isSubmitting ? null : _submit,
                       child: isSubmitting
-                          ? const SizedBox(
+                          ? SizedBox(
                               width: 20,
                               height: 20,
                               child: CircularProgressIndicator(
+                                semanticsLabel: strings.loading,
                                 strokeWidth: 2.4,
                               ),
                             )

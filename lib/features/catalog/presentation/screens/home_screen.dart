@@ -112,6 +112,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     suffixIcon: _searchController.text.isEmpty
                         ? null
                         : IconButton(
+                            tooltip: strings.clearSearch,
                             icon: const Icon(Icons.close),
                             onPressed: () {
                               _searchController.clear();
@@ -189,7 +190,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final state = ref.watch(catalogControllerProvider);
 
     if (state.isInitialLoad) {
-      return const Center(child: CircularProgressIndicator());
+      return Center(
+        child: CircularProgressIndicator(semanticsLabel: strings.loading),
+      );
     }
     if (state.error != null && state.products.isEmpty) {
       return ErrorView(
@@ -222,9 +225,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         itemBuilder: (context, index) {
           if (index == products.length) return _footer(strings);
           final product = products[index];
-          return ProductCard(
-            product: product,
-            onTap: () => widget.onOpenProduct(product.id),
+          // `RepaintBoundary` : les tuiles voisines ne se redessinent pas
+          // quand celle-ci change (favori, quantité, vignette).
+          return RepaintBoundary(
+            child: ProductCard(
+              product: product,
+              onTap: () => widget.onOpenProduct(product.id),
+            ),
           );
         },
       ),
@@ -236,7 +243,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final state = ref.watch(catalogControllerProvider);
 
     if (state.isLoadingMore) {
-      return const Center(child: CircularProgressIndicator());
+      return Center(
+        child: CircularProgressIndicator(semanticsLabel: strings.loading),
+      );
     }
     if (!state.hasMore) {
       return Center(

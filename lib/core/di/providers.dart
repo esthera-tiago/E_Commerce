@@ -107,6 +107,7 @@ final dioProvider = Provider<Dio>((ref) {
 final connectivityProvider = StreamProvider<List<ConnectivityResult>>((ref) {
   const online = <ConnectivityResult>[];
   final controller = StreamController<List<ConnectivityResult>>();
+  StreamSubscription<List<ConnectivityResult>>? subscription;
 
   // `connectivity_plus` n'a pas d'implémentation sur toutes les plateformes
   // cibles : l'activation du canal peut échouer de façon synchrone, avant même
@@ -115,7 +116,7 @@ final connectivityProvider = StreamProvider<List<ConnectivityResult>>((ref) {
   // stratégie offline s'appuie sur le cache, jamais sur ce détecteur.
   controller.onListen = () {
     try {
-      Connectivity().onConnectivityChanged.listen(
+      subscription = Connectivity().onConnectivityChanged.listen(
         controller.add,
         onError: (Object _) => controller.add(online),
         cancelOnError: false,
@@ -125,7 +126,14 @@ final connectivityProvider = StreamProvider<List<ConnectivityResult>>((ref) {
     }
   };
 
-  ref.onDispose(controller.close);
+  // L'abonnement doit être annulé avec le provider. Sans cela, chaque
+  // recréation de celui-ci laisserait un abonné orphelin sur le canal : le
+  // `EventChannel` ne réémet son état qu'à la première abonnement, et le
+  // bandeau « hors-ligne » resterait bloqué sur son dernier état connu.
+  ref.onDispose(() {
+    unawaited(subscription?.cancel());
+    controller.close();
+  });
   return controller.stream;
 });
 

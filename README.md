@@ -9,6 +9,9 @@ avec authentification JWT, cache hors-ligne et Clean Architecture.
 ![Dio](https://img.shields.io/badge/Dio-5.11-CA4245)
 ![GoRouter](https://img.shields.io/badge/GoRouter-16-00B8A9)
 
+[![CI](https://github.com/esthera-tiago/E_Commerce/actions/workflows/ci.yml/badge.svg)](https://github.com/esthera-tiago/E_Commerce/actions/workflows/ci.yml)
+[![APK](https://github.com/esthera-tiago/E_Commerce/actions/workflows/apk.yml/badge.svg)](https://github.com/esthera-tiago/E_Commerce/actions/workflows/apk.yml)
+
 ---
 
 ## Captures d'écran
@@ -22,9 +25,9 @@ avec authentification JWT, cache hors-ligne et Clean Architecture.
 | ![Panier](Screnshots/04-panier.png) | ![Commandes](Screnshots/05-commandes.png) | ![Compte](Screnshots/06-compte.png) |
 
 > Les captures ne sont pas des images dessinées à la main : elles sont produites par
-> `test/app/screenshots_test.dart`, qui rend les écrans réels de l'application
+> `test/widget/screenshots_test.dart`, qui rend les écrans réels de l'application
 > (390 × 844 pt, densité 3) sur une API en mémoire. Régénération :
-> `flutter test test/app/screenshots_test.dart --update-goldens`
+> `flutter test test/widget/screenshots_test.dart --update-goldens`
 > Les photos produits ne sont pas rechargées dans ce contexte hors-ligne : les
 > zones d'image apparaissent donc dans leur état de substitution, ce que la suite
 > de tests accepte volontairement.
@@ -150,18 +153,36 @@ Base : `https://dummyjson.com` — 8 points d'entrée, tous vérifiés en direct
 flutter test
 ```
 
-**76 tests, aucun accès réseau** : l'API est simulée par un adaptateur Dio en
-mémoire (`test/support/`).
+**90 tests, aucun accès réseau** : l'API est simulée par un adaptateur Dio en
+mémoire (`test/support/`), la connectivité et le `path_provider` par des faux
+de canal. Les tests sont répartis en trois niveaux.
+
+### `test/unit/` — logique métier
 
 | Suite | Ce qu'elle protège |
 |-------|--------------------|
-| `test/features/auth/auth_repository_test.dart` (23) | Connexion API, repli local, expiration, rafraîchissement, déconnexion, persistance par origine |
-| `test/features/catalog/catalog_repository_test.dart` (12) | Recherche, catégories, tri, cache, fichiers corrompus, erreurs réseau |
-| `test/features/orders/orders_repository_test.dart` (6) | Cloisonnement par utilisateur, repli cache, effacement |
-| `test/features/cart/cart_controller_test.dart` (10) | Quantités, totaux, persistance, entrées corrompues |
-| `test/core/error_mapper_test.dart` (13) | Traduction des erreurs Dio en exceptions métier |
-| `test/app/app_smoke_test.dart` (6) | Routeur, garde de session, connexion réelle, onglets, panier |
-| `test/app/screenshots_test.dart` (6) | Non-régression de mise en page des écrans + captures |
+| `auth_repository_test.dart` (23) | Connexion API, repli local, expiration, rafraîchissement, déconnexion, persistance par origine |
+| `catalog_repository_test.dart` (12) | Recherche, catégories, tri, cache, fichiers corrompus, erreurs réseau |
+| `cart_controller_test.dart` (10) | Quantités, totaux, persistance, entrées corrompues |
+| `error_mapper_test.dart` (13) | Traduction des erreurs Dio en exceptions métier |
+| `app_strings_test.dart` (3) | Chaînes FR/EN non vides, absence de doublon entre les langues, chaînes paramétrées |
+| `orders_repository_test.dart` (6) | Cloisonnement par utilisateur, repli cache, effacement |
+
+### `test/widget/` — interface
+
+| Suite | Ce qu'elle protège |
+|-------|--------------------|
+| `app_smoke_test.dart` (6) | Routeur, garde de session, connexion réelle, onglets, panier |
+| `accessibility_test.dart` (5) | Parcours de l'arbre de sémantique réel : aucun bouton sans nom accessible |
+| `rebuild_isolation_test.dart` (2) | Reconstruction mesurée : un favori ou un ajout au panier ne réveille qu'une tuile |
+| `screenshots_test.dart` (6) | Non-régression de mise en page des écrans + captures |
+
+### `test/integration/` — parcours complets
+
+| Suite | Ce qu'elle protège |
+|-------|--------------------|
+| `purchase_flow_test.dart` (2) | Connexion → fiche produit → panier → confirmation → panier vidé, y compris après redémarrage |
+| `offline_cache_test.dart` (2) | Catalogue servi depuis le cache après coupure réseau, et refus d'inventer des données sans cache |
 
 Qualité :
 
@@ -169,6 +190,12 @@ Qualité :
 flutter analyze     # aucun avertissement
 dart format --set-exit-if-changed lib test
 ```
+
+Les deux mêmes commandes sont exécutées par GitHub Actions à chaque push sur
+`main` (`.github/workflows/ci.yml`), qui construit aussi la version web. L'APK
+debug est produit à la demande, ou automatiquement sur un tag `v*`
+(`.github/workflows/apk.yml`) : le projet n'a pas de keystore de publication,
+l'artefact est donc explicitement un build de débogage.
 
 ---
 
@@ -181,7 +208,14 @@ dart format --set-exit-if-changed lib test
 - **Cache robuste** : une entrée illisible est ignorée au lieu de casser l'écran
   (cas couvert par les tests panier et commandes).
 - **Bandeau hors-ligne tolérant** : l'absence de détecteur réseau sur une
-  plateforme non supportée ne produit plus d'erreur non gérée.
+  plateforme non supportée ne produit plus d'erreur non gérée, et l'abonnement
+  au détecteur est annulé avec le provider.
+- **Images décodées à leur taille d'affichage** : une vignette de catalogue de
+  400 pt n'occupe pas 2000 px de mémoire vive, et chaque tuile est une couche
+  de repaint indépendante.
+- **État observé au plus juste** : une tuile n'observe que la quantité du
+  produit qu'elle affiche, pas le panier entier — vérifié par un test qui compte
+  les reconstructions réelles du framework.
 - **Mises en page vérifiées sur téléphone** : les grilles, prix et en-têtes
   s'adaptent aux textes français les plus longs ; la suite de captures échoue
   si un écran déborde.
@@ -194,3 +228,12 @@ dart format --set-exit-if-changed lib test
 - Les captures d'écran n'affichent pas les photos produits : le gestionnaire
   d'images de `cached_network_image` revalide systématiquement par le réseau,
   ce qu'un test de widget ne peut pas attendre.
+- Une commande validée est confirnée à l'utilisateur mais n'est pas inscrite
+  dans l'historique : le panier est vidé sans qu'une commande locale soit
+  enregistrée, et l'onglet « Commandes » n'affiche que les commandes renvoyées
+  par l'API. La commande passée depuis l'application est donc invisible après
+  redémarrage.
+- Les filtres par catégorie disparaissent hors-ligne : ils sont lus sur l'API et
+  ne sont pas mis en cache, contrairement aux pages de produits.
+- Aucun test sur appareil réel : le nombre d'images par seconde et la fluidité
+  réelle du défilement ne sont pas mesurés.

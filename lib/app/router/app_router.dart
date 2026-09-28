@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../core/l10n/app_strings.dart';
 import '../../features/auth/presentation/auth_controller.dart';
 import '../../features/auth/presentation/screens/login_screen.dart';
 import '../../features/auth/presentation/screens/profile_screen.dart';
@@ -163,6 +164,7 @@ class _RouteNotFound extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final strings = AppStrings.of(context);
     return Scaffold(
       appBar: AppBar(),
       body: Center(
@@ -171,11 +173,13 @@ class _RouteNotFound extends StatelessWidget {
           children: [
             const Icon(Icons.explore_off_outlined, size: 48),
             const SizedBox(height: 12),
+            Semantics(header: true, child: Text(strings.notFoundTitle)),
+            const SizedBox(height: 4),
             Text('404 — $location'),
             const SizedBox(height: 12),
             FilledButton(
               onPressed: () => context.go(Routes.shop),
-              child: const Text('Retour à la boutique'),
+              child: Text(strings.notFoundBackToShop),
             ),
           ],
         ),

@@ -1,0 +1,69 @@
+name: CI
+
+# Analyse, tests et build de chaque proposition de modification.
+# La version de Flutter est épinglée : les goldens sont sensibles au rendu du
+# moteur, une version différente produirait des échecs qui ne signalent aucun
+# défaut de l'application.
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  # Une nouvelle exécution annule la précédente sur la même branche : inutile de
+  # consommer des minutes pour valider un commit déjà abandonné.
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    name: Analyse et tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 3.44.1
+          channel: stable
+          cache: true
+
+      - name: Dépendances
+        run: flutter pub get
+
+      - name: Formatage
+        run: dart format --output=none --set-exit-if-changed lib test
+
+      - name: Analyse statique
+        run: flutter analyze
+
+      - name: Tests
+        run: flutter test --reporter expanded
+
+  build:
+    name: Build web
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 3.44.1
+          channel: stable
+          cache: true
+
+      - name: Dépendances
+        run: flutter pub get
+
+      - name: Compilation web
+        run: flutter build web --release
+
+      - name: Publication de l'artefact
+        uses: actions/upload-artifact@v4
+        with:
+          name: e-commerce-web
+          path: build/web
+          retention-days: 7

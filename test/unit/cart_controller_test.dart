@@ -2,7 +2,7 @@ import 'package:e_commerce_app/features/cart/presentation/cart_controller.dart';
 import 'package:e_commerce_app/features/catalog/domain/entities/product.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import '../../support/fake_json_cache_store.dart';
+import '../support/fake_json_cache_store.dart';
 
 /// Le panier est le seul état purement client de l'application : ces tests
 /// verrouillent ses invariants (quantités, plafonds, totaux, persistance).

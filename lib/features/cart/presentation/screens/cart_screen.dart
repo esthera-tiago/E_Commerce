@@ -21,7 +21,9 @@ class CartScreen extends ConsumerWidget {
 
     if (cart.isEmpty) {
       return Scaffold(
-        appBar: AppBar(title: Text(strings.cart)),
+        appBar: AppBar(
+          title: Semantics(header: true, child: Text(strings.cart)),
+        ),
         body: EmptyState(
           icon: Icons.shopping_cart_outlined,
           title: strings.cartEmpty,
@@ -32,7 +34,7 @@ class CartScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(strings.cart),
+        title: Semantics(header: true, child: Text(strings.cart)),
         actions: [
           IconButton(
             tooltip: strings.clearCart,
@@ -135,6 +137,7 @@ class _QuantityStepper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
+    final strings = AppStrings.of(context);
     return Container(
       decoration: BoxDecoration(
         border: Border.all(color: scheme.outlineVariant),
@@ -146,6 +149,7 @@ class _QuantityStepper extends StatelessWidget {
           IconButton(
             visualDensity: VisualDensity.compact,
             iconSize: 18,
+            tooltip: strings.decreaseQuantity,
             onPressed: onDecrement,
             icon: const Icon(Icons.remove),
           ),
@@ -160,6 +164,7 @@ class _QuantityStepper extends StatelessWidget {
           IconButton(
             visualDensity: VisualDensity.compact,
             iconSize: 18,
+            tooltip: strings.increaseQuantity,
             onPressed: onIncrement,
             icon: const Icon(Icons.add),
           ),

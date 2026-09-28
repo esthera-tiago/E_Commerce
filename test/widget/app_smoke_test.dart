@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:e_commerce_app/app/app.dart';
 import 'package:e_commerce_app/core/di/providers.dart';
 import 'package:e_commerce_app/core/storage/local_storage.dart';
+import 'package:e_commerce_app/features/catalog/presentation/widgets/product_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -210,7 +211,7 @@ void main() {
   testWidgets('le détail produit s\'ouvre depuis l\'accueil', (tester) async {
     await login(tester);
 
-    await tester.tap(find.text('iPhone 9'));
+    await tester.tap(find.byType(ProductCard).first);
     await settle(tester, steps: 20);
 
     expect(api.hits('/products/1'), greaterThanOrEqualTo(1));
@@ -246,7 +247,7 @@ void main() {
   testWidgets('un produit ajouté au panier alimente le badge', (tester) async {
     await login(tester);
 
-    await tester.tap(find.text('iPhone 9'));
+    await tester.tap(find.byType(ProductCard).first);
     await settle(tester, steps: 20);
     await tester.tap(find.text('Ajouter au panier'));
     await settle(tester);

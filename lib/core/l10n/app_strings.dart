@@ -33,6 +33,12 @@ class AppStrings {
   String date(DateTime value) =>
       DateFormat.yMMMd(locale.toString()).format(value);
 
+  /// Note sur 5, annoncée aux lecteurs d'écran à la place des cinq étoiles.
+  String rating(double value) {
+    final formatted = NumberFormat('#,##0.0', locale.toString()).format(value);
+    return _pick('Note $formatted sur 5', 'Rating $formatted out of 5');
+  }
+
   // ----------------------------------------------------------------- app ---
   String get appName => _pick('She4Tech', 'She4Tech');
   String get tagline => _pick('Boutique connectée', 'Connected store');
@@ -44,12 +50,19 @@ class AppStrings {
   String get navFavorites => _pick('Favoris', 'Favorites');
   String get navAccount => _pick('Compte', 'Account');
 
+  // --------------------------------------------------------- page 404 ---
+  String get notFoundTitle => _pick('Page introuvable', 'Page not found');
+  String get notFoundBackToShop =>
+      _pick('Retour à la boutique', 'Back to the store');
+
   // -------------------------------------------------------------- auth ---
   String get login => _pick('Connexion', 'Sign in');
   String get register => _pick('Créer un compte', 'Create account');
   String get logout => _pick('Se déconnecter', 'Sign out');
   String get username => _pick('Nom d’utilisateur', 'Username');
   String get password => _pick('Mot de passe', 'Password');
+  String get showPassword => _pick('Afficher le mot de passe', 'Show password');
+  String get hidePassword => _pick('Masquer le mot de passe', 'Hide password');
   String get email => _pick('Adresse e-mail', 'Email address');
   String get firstName => _pick('Prénom', 'First name');
   String get lastName => _pick('Nom', 'Last name');
@@ -81,6 +94,7 @@ class AppStrings {
   String get products => _pick('Produits', 'Products');
   String get allCategories => _pick('Toutes les catégories', 'All categories');
   String get searchHint => _pick('Rechercher un produit…', 'Search a product…');
+  String get clearSearch => _pick('Effacer la recherche', 'Clear search');
   String get noResults => _pick('Aucun produit trouvé.', 'No product found.');
   String get sortBy => _pick('Trier par', 'Sort by');
   String get sortRelevance => _pick('Pertinence', 'Relevance');
@@ -100,6 +114,13 @@ class AppStrings {
   String get outOfStock => _pick('Rupture de stock', 'Out of stock');
   String get lowStock => _pick('Stock faible', 'Low stock');
   String get addToCart => _pick('Ajouter au panier', 'Add to cart');
+  String get addToFavorites => _pick('Ajouter aux favoris', 'Add to favorites');
+  String get removeFromFavorites =>
+      _pick('Retirer des favoris', 'Remove from favorites');
+  String get increaseQuantity =>
+      _pick('Augmenter la quantité', 'Increase quantity');
+  String get decreaseQuantity =>
+      _pick('Diminuer la quantité', 'Decrease quantity');
   String get inCart => _pick('Dans le panier', 'In cart');
   String get description => _pick('Description', 'Description');
   String get specifications => _pick('Caractéristiques', 'Specifications');

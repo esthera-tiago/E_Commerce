@@ -17,13 +17,19 @@ class FavoritesScreen extends ConsumerWidget {
     final favorites = ref.watch(favoriteProductsProvider);
 
     return Scaffold(
-      appBar: AppBar(title: Text(strings.favorites)),
+      appBar: AppBar(
+        title: Semantics(header: true, child: Text(strings.favorites)),
+      ),
       body: Column(
         children: [
           const OfflineBanner(),
           Expanded(
             child: favorites.when(
-              loading: () => const Center(child: CircularProgressIndicator()),
+              loading: () => Center(
+                child: CircularProgressIndicator(
+                  semanticsLabel: strings.loading,
+                ),
+              ),
               error: (error, _) => ErrorView(
                 message: strings.errorGeneric,
                 onRetry: () => ref.invalidate(favoriteProductsProvider),

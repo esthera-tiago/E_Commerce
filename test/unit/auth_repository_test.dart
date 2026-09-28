@@ -11,7 +11,7 @@ import 'package:e_commerce_app/features/auth/data/repositories/auth_repository_i
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../support/fake_json_cache_store.dart';
+import '../support/fake_json_cache_store.dart';
 
 class _MockRemote extends Mock implements AuthRemoteDataSource {}
 

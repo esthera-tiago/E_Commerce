@@ -11,6 +11,13 @@ class FakeApi {
   final Map<String, Object Function(Map<String, dynamic> query)> _routes = {};
   final List<String> requests = [];
 
+  /// Bascule le faux réseau en panne totale.
+  ///
+  /// Le catalogue ne se rabat sur son cache que sur une panne *réseau* : un 500
+  /// ou un 404 doivent rester de vraies erreurs. Reproduire la coupure exige
+  /// donc une exception de connexion, pas un statut HTTP.
+  bool offline = false;
+
   /// Enregistre une réponse pour toute URL contenant [fragment].
   void on(
     String fragment,
@@ -51,6 +58,14 @@ class _FakeAdapter implements HttpClientAdapter {
   ) async {
     final query = options.uri.queryParameters;
     api.requests.add('${options.method} ${options.uri.path}');
+
+    if (api.offline) {
+      throw DioException(
+        requestOptions: options,
+        type: DioExceptionType.connectionError,
+        error: 'Réseau indisponible',
+      );
+    }
 
     Object? payload;
     var status = 200;
