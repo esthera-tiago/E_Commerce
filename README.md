@@ -12,6 +12,20 @@ avec authentification JWT, cache hors-ligne et Clean Architecture.
 [![CI](https://github.com/esthera-tiago/E_Commerce/actions/workflows/ci.yml/badge.svg)](https://github.com/esthera-tiago/E_Commerce/actions/workflows/ci.yml)
 [![APK](https://github.com/esthera-tiago/E_Commerce/actions/workflows/apk.yml/badge.svg)](https://github.com/esthera-tiago/E_Commerce/actions/workflows/apk.yml)
 
+**Version 2.1.0** · Flutter 3.44 / Dart 3.12 · 90 tests · API publique, sans clé
+
+## Sommaire
+
+- [Captures d'écran](#captures-décran)
+- [Fonctionnalités](#fonctionnalités)
+- [Comptes de démonstration](#comptes-de-démonstration)
+- [Démarrage](#démarrage)
+- [Architecture](#architecture)
+- [API utilisée](#api-utilisée)
+- [Tests](#tests)
+- [Choix techniques notables](#choix-techniques-notables)
+- [Limites connues](#limites-connues)
+
 ---
 
 ## Captures d'écran
@@ -41,9 +55,10 @@ avec authentification JWT, cache hors-ligne et Clean Architecture.
 - **Fiche produit** — notation par étoiles, description, caractéristiques,
   informations de garantie/livraison/retour, avis clients, ajout au panier
 - **Panier** — quantités, suppression, total recalculé, badge sur l'onglet,
-  commande rattachée au compte
+  panier conservé sur l'appareil et restauré au redémarrage
 - **Favoris** — persistance locale, synchronisés avec le catalogue
-- **Commandes** — historique par utilisateur, cache local, pull-to-refresh
+- **Commandes** — historique renvoyé par l'API, cloisonné par utilisateur, cache
+  local, pull-to-refresh (voir « Limites connues » pour ce qui n'y entre pas)
 - **Profil** — données de l'utilisateur, options, aide, à propos, déconnexion
 - **Paramètres** — thème clair/sombre, langue FR/EN, notifications, confidentialité
 - **Compte invité** — catalogue, favoris et panier accessibles sans connexion
@@ -68,22 +83,41 @@ avec authentification JWT, cache hors-ligne et Clean Architecture.
 
 ## Démarrage
 
+Prérequis : Flutter 3.44 ou plus récent (Dart 3.12) et un SDK Android ou iOS
+installé. Aucune clé d'API ni configuration n'est nécessaire : l'API publique est
+l'unique dépendance externe.
+
 ```sh
 flutter pub get
 flutter run
 ```
 
-Aucune clé d'API ni configuration n'est nécessaire : l'API publique est l'unique
-dépendance externe.
+### APK Android
+
+```sh
+flutter build apk --debug    # build/app/outputs/flutter-apk/app-debug.apk
+```
+
+Deux prérequis spécifiques à cette machine, rencontrés à la compilation :
+
+- un **JDK 17** — Gradle 9.1 rejette Java 21 et plus récent
+  (`Unsupported class file major version`) ;
+- un **SDK Android inscriptible** — le NDK 28.2 doit pouvoir s'y installer ;
+  un SDK monté en lecture seule fait échouer la configuration du projet.
+
+Le même artefact est produit par GitHub Actions (onglet **Actions → APK → Run
+workflow**) puis déposé en archive téléchargeable. Aucun keystore n'est
+versionné : l'APK fourni est donc un build de débogage, non publiable sur un
+store.
 
 ### Plateformes
 
 | Plateforme | Statut |
 |------------|--------|
-| Web        | ✅ `flutter build web --release` |
-| Android    | ✅ |
-| iOS        | ✅ |
-| Linux      | ⚠️ nécessite `g++` sur la machine hôte |
+| Web | ✅ `flutter build web --release` |
+| Android | ✅ APK debug construit (`2.1.0`, voir « Démarrage ») |
+| iOS | ⚠️ code présent, jamais compilé : un build iOS exige macOS et Xcode |
+| Linux | ⚠️ nécessite `g++` sur la machine hôte |
 
 ---
 
@@ -188,7 +222,7 @@ Qualité :
 
 ```sh
 flutter analyze     # aucun avertissement
-dart format --set-exit-if-changed lib test
+dart format --output=none --set-exit-if-changed lib test
 ```
 
 Les deux mêmes commandes sont exécutées par GitHub Actions à chaque push sur
@@ -196,6 +230,8 @@ Les deux mêmes commandes sont exécutées par GitHub Actions à chaque push sur
 debug est produit à la demande, ou automatiquement sur un tag `v*`
 (`.github/workflows/apk.yml`) : le projet n'a pas de keystore de publication,
 l'artefact est donc explicitement un build de débogage.
+
+---
 
 ---
 
@@ -219,6 +255,8 @@ l'artefact est donc explicitement un build de débogage.
 - **Mises en page vérifiées sur téléphone** : les grilles, prix et en-têtes
   s'adaptent aux textes français les plus longs ; la suite de captures échoue
   si un écran déborde.
+
+---
 
 ## Limites connues
 

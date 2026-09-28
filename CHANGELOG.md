@@ -58,9 +58,9 @@ Travail en cours sur la branche courante.
 - Clean Architecture par fonctionnalité (`data` / `domain` / `presentation`) et
   socle transversal `core` ; l'ancien découpage `screens` / `models` /
   `providers` disparaît.
-- `GoRouter` avec garde de session et quatre onglats conservant leur propre
+- `GoRouter` avec garde de session et quatre onglets conservant leur propre
   pile de navigation (`StatefulShellRoute.indexedStack`).
-- Cache hors-ligne Hive horodaté, cloisonné par utilisateur, avec replacement
+- Cache hors-ligne Hive horodaté, cloisonné par utilisateur, avec remplacement
   atomique et lecture au démarrage.
 - `flutter_secure_storage` pour les seuls JWT : aucun secret n'atteint Hive.
 - Intercepteur Dio qui rafraîchit le jeton sur `401` et rejoue la requête en
@@ -70,9 +70,9 @@ Travail en cours sur la branche courante.
 - README réécrit (architecture, persistance, API, tests, limites connues).
 
 ### Corrigé
-- Les delegates `MaterialLocalizations` / `CupertinoLocalizations` manquaient :
+- Les délégués `MaterialLocalizations` / `CupertinoLocalizations` manquaient :
   l'interface française levait une exception à l'exécution.
-- `connectivity_plus` sans implémentationlevait une `MissingPluginException` non
+- `connectivity_plus` sans implémentation levait une `MissingPluginException` non
   gérée ; le flux est désormais protégé et retombe sur « en ligne ».
 - Débordements de mise en page en français sur un écran de 390 pt : grille
   catalogue, prix des cartes produit, prix du détail produit, en-tête de
